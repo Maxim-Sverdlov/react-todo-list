@@ -1,34 +1,75 @@
-import './App.css';
+import React, {Component} from 'react';
+import './App.scss';
 
-import Form from './components/Form/Form';
 import Filter from './components/Filter/Filter';
-import Task from './components/Task/Task';
-import List from './components/List/List';
+import Tasks from './components/Tasks/Tasks';
+import Todos from './components/Todos/Todos';
 
-function App() {
-  return (
-    <div className="App">
-      <div className="container">
-        <h1 class="visually-hidden">APP TODO LIST</h1>
-        <header class="header">
-            <div class="header__container">
-                <a class="header__logo" href="https://senlainc.com/" title="web site company SENLA">
-                    <img src="./images/content/logo.svg" width="174" height="44" alt="Company SENLA Logo" />
-                </a>
-                <Form />
-            </div>
-        </header>
-        
-        <main class="main">
-            <Filter />
+class App extends Component {
+  state =  {
+    todos: [],
+  }
 
-            <Task />
+  addTodo = (todo) => {
+    this.setState({
+      todos: [todo, ...this.state.todos]
+    });
+  };
 
-            <List />
-        </main>
+  getList = () => {
+    return localStorage.getItem('todo-list') !== null ? JSON.parse(localStorage.getItem('todo-list')) : [];
+  }
+
+  saveToLocalStorage = (task) => {
+    this.setState.todos.push(task);
+    localStorage.setItem('todo-list', JSON.stringify(this.state.todos));
+  }
+
+  removeFromLocalStorage = (todoIndex) => {
+    this.setState.todos.splice(todoIndex, 1);
+    localStorage.setItem('todo-list', JSON.stringify(this.state.todos));
+  }
+
+  toggleComplete = (id) => {
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            completed: !todo.completed,
+          }
+        } else {
+          return todo;
+        }
+      })
+    })
+  }
+
+  render() {
+    const {todos} = this.state;
+    
+    return (
+      <div className="App">
+        <div className="container">
+          <h1 className="visually-hidden">APP TODO LIST</h1>
+          <header className="header">
+              <Filter />
+          </header>
+          
+          <main className="main">
+              <Tasks 
+                onClick={this.addTodo}
+              />
+
+              <Todos 
+                items={todos}
+                toggleComplete={this.toggleComplete}
+              />
+          </main>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
