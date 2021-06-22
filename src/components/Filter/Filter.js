@@ -16,8 +16,13 @@ class Filter extends Component {
     
     submitHandler = (e) => {
         e.preventDefault();
-        console.log('HI!');
     };
+
+    filterChange = (e) => {
+        document.querySelector('.filter__link--active').classList.remove('filter__link--active');
+        e.target.classList.add('filter__link--active');
+        this.props.onClick(e.target.innerText);
+    }
 
     render() {
         return(
@@ -42,13 +47,25 @@ class Filter extends Component {
                 </form>
                 <ul className="filter">
                     <li className="filter__item">
-                        <a className="filter__link  filter__link--active" href="#">All</a>
+                        <a 
+                            className="filter__link  filter__link--active"
+                            onClick={this.filterChange}
+                            href="#">All
+                        </a>
                     </li>
                     <li className="filter__item">
-                        <a className="filter__link" href="#">Active</a>
+                        <a 
+                            className="filter__link"
+                            onClick={this.filterChange}
+                            href="#">Active
+                        </a>
                     </li>
                     <li className="filter__item">
-                        <a className="filter__link" href="#">Done</a>
+                        <a 
+                            className="filter__link"
+                            onClick={this.filterChange}
+                            href="#">Done
+                        </a>
                     </li>
                 </ul>
             </div>

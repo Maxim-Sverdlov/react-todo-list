@@ -8,6 +8,7 @@ import Todos from './components/Todos/Todos';
 class App extends Component {
   state =  {
     todos: [],
+    mode: 'All',
   }
 
   addTodo = (todo) => {
@@ -45,15 +46,41 @@ class App extends Component {
     })
   }
 
+  /*
+  filteredTodos = (mode) => {
+    if (mode === 'all') {
+
+    } else if (mode === 'active') {
+
+    } else {
+
+    }
+  }
+  */
+
+  changeMode = (s) => {
+    this.setState({mode: s});
+  }
+
   render() {
-    const {todos} = this.state;
+    let todos = [];
+
+    if (this.state.mode === 'All') {
+      todos = this.state.todos;
+    } else if (this.state.mode === 'Active') {
+      todos = this.state.todos.filter(todo => !todo.completed);
+    } else if (this.state.mode === 'Done') {
+      todos = this.state.todos.filter(todo => todo.completed);
+    }
     
     return (
       <div className="App">
         <div className="container">
           <h1 className="visually-hidden">APP TODO LIST</h1>
           <header className="header">
-              <Filter />
+              <Filter 
+                onClick={this.changeMode}
+              />
           </header>
           
           <main className="main">
