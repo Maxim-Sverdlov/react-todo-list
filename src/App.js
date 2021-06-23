@@ -6,9 +6,19 @@ import Tasks from './components/Tasks/Tasks';
 import Todos from './components/Todos/Todos';
 
 class App extends Component {
-  state =  {
+  state = {
     todos: [],
     mode: 'All',
+    searchedValue: '',
+  }
+
+  componentDidMount() {
+    const todos = localStorage.getItem('todo-list') !== null ? JSON.parse(localStorage.getItem('todo-list')) : [];
+    this.setState({ todos: todos });
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('todo-list', JSON.stringify(this.state.todos));
   }
 
   addTodo = (todo) => {
@@ -17,18 +27,10 @@ class App extends Component {
     });
   };
 
-  getList = () => {
-    return localStorage.getItem('todo-list') !== null ? JSON.parse(localStorage.getItem('todo-list')) : [];
-  }
-
-  saveToLocalStorage = (task) => {
-    this.setState.todos.push(task);
-    localStorage.setItem('todo-list', JSON.stringify(this.state.todos));
-  }
-
-  removeFromLocalStorage = (todoIndex) => {
-    this.setState.todos.splice(todoIndex, 1);
-    localStorage.setItem('todo-list', JSON.stringify(this.state.todos));
+  removeTodo = (id) => {
+    this.setState({
+      todos: this.state.todos.filter(todo => todo.id !== id),
+    });
   }
 
   toggleComplete = (id) => {
@@ -43,23 +45,30 @@ class App extends Component {
           return todo;
         }
       })
-    })
+    });
   }
 
-  /*
-  filteredTodos = (mode) => {
-    if (mode === 'all') {
-
-    } else if (mode === 'active') {
-
-    } else {
-
-    }
+  toggleImportant = (id) => {
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            important: !todo.important,
+          }
+        } else {
+          return todo;
+        }
+      })
+    });
   }
-  */
 
   changeMode = (s) => {
     this.setState({mode: s});
+  }
+
+  changeSearchedValue = (text) => {
+    this.setState({searchedValue: text});
   }
 
   render() {
@@ -72,7 +81,15 @@ class App extends Component {
     } else if (this.state.mode === 'Done') {
       todos = this.state.todos.filter(todo => todo.completed);
     }
-    
+
+    todos = todos.filter((val) =>{
+      if (this.state.searchedValue === '') {
+        return val;
+      } else if (val.text.toLowerCase().includes(this.state.searchedValue.toLowerCase())) {
+        return val;
+      }
+    })
+
     return (
       <div className="App">
         <div className="container">
@@ -80,6 +97,7 @@ class App extends Component {
           <header className="header">
               <Filter 
                 onClick={this.changeMode}
+                searched={this.changeSearchedValue}
               />
           </header>
           
@@ -91,6 +109,8 @@ class App extends Component {
               <Todos 
                 items={todos}
                 toggleComplete={this.toggleComplete}
+                toggleImportant={this.toggleImportant}
+                onRemove={this.removeTodo}
               />
           </main>
         </div>

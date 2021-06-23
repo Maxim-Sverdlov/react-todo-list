@@ -6,12 +6,12 @@ class Filter extends Component {
     state = {
         text: '',
     }
-
+    
     inputChangeHandler = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
-        console.log(e.target.value);
+        this.props.searched(e.target.value);
     };
     
     submitHandler = (e) => {

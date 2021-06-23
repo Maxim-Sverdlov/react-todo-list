@@ -12,6 +12,8 @@ class Todos extends Component {
                         id={todo.id}
                         todo={todo}
                         toggle={this.props.toggleComplete}
+                        important={this.props.toggleImportant}
+                        remove={this.props.onRemove}
                     />
                 })}
             </ul>
