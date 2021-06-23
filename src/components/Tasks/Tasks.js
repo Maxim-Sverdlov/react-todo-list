@@ -7,6 +7,13 @@ class Tasks extends Component {
         text: '',
     }
     
+    pressedEnter = (e) => {
+        if(e.keyCode === 13 && e.shiftKey === false) {
+            e.preventDefault();
+            this.handleClick();
+        }
+    }
+
     changeValue = (e) => {
         this.setState({
             text: e.target.value,
@@ -38,6 +45,7 @@ class Tasks extends Component {
                     rows="3"
                     value={this.setState.text}
                     onChange={this.changeValue}
+                    onKeyDown={this.pressedEnter}
                 >
                 </textarea>
                 <button 

@@ -24,11 +24,19 @@ class TodoItem extends Component {
     }
 
     render() {
+        let classes = [];
+        classes.push('list-task__item');
+        if (this.props.todo.important) {
+            classes.push('list-task__item--important');
+        }
+        if (this.props.todo.completed) {
+            classes.push('list-task__item--done');
+        }
+
         return(
             <li 
                 key={this.props.todo.id}
-                className={this.props.todo.important ? "list-task__item list-task__item--important" : "list-task__item"}
-                style={{ textDecoration: this.props.todo.completed ? 'line-through' : ''}}
+                className={classes.join(' ')}
                 onClick={this.onClickDone}
             >
                 <p>{this.props.todo.text}</p>
