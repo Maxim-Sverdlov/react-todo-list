@@ -80,13 +80,15 @@ class App extends Component {
       todos = this.state.todos.filter(todo => !todo.completed);
     } else if (this.state.mode === 'Done') {
       todos = this.state.todos.filter(todo => todo.completed);
-    }
-
-    todos = todos.filter((val) =>{
+    }    
+   
+    todos = todos.filter(todo => {
       if (this.state.searchedValue === '') {
-        return val;
-      } else if (val.text.toLowerCase().includes(this.state.searchedValue.toLowerCase())) {
-        return val;
+        return todo;
+      } else if (todo.text.toLowerCase().includes(this.state.searchedValue.toLowerCase())) {
+        return todo;
+      } else {
+        return null;
       }
     })
 

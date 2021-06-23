@@ -47,25 +47,25 @@ class Filter extends Component {
                 </form>
                 <ul className="filter">
                     <li className="filter__item">
-                        <a 
+                        <button
                             className="filter__link  filter__link--active"
                             onClick={this.filterChange}
-                            href="#">All
-                        </a>
+                        >All
+                        </button>
                     </li>
                     <li className="filter__item">
-                        <a 
+                        <button
                             className="filter__link"
                             onClick={this.filterChange}
-                            href="#">Active
-                        </a>
+                        >Active
+                        </button>
                     </li>
                     <li className="filter__item">
-                        <a 
+                        <button
                             className="filter__link"
                             onClick={this.filterChange}
-                            href="#">Done
-                        </a>
+                        >Done
+                        </button>
                     </li>
                 </ul>
             </div>
